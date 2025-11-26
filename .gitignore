@@ -1,0 +1,221 @@
+# ============================================
+# SENSITIVE FILES - NEVER COMMIT THESE
+# ============================================
+
+# Environment variables with API keys and secrets
+.env
+.env.*
+!.env.example
+*.env
+
+# API keys and credentials
+**/api-keys.txt
+**/credentials.txt
+**/secrets.*
+
+# ============================================
+# Node.js / JavaScript / TypeScript
+# ============================================
+
+# Dependencies
+node_modules/
+jspm_packages/
+bower_components/
+
+# Build outputs
+dist/
+build/
+out/
+*.js.map
+*.d.ts.map
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+pnpm-debug.log*
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage and testing
+coverage/
+.nyc_output/
+*.lcov
+.coverage
+.hypothesis/
+.pytest_cache/
+
+# ============================================
+# Rust
+# ============================================
+
+# Rust build outputs
+**/target/
+**/*.rs.bk
+Cargo.lock
+
+# Rust profiling
+*.profdata
+*.profraw
+
+# ============================================
+# Database and Cache
+# ============================================
+
+# SQLite databases
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# Cache directories
+cache/
+.cache/
+**/cache/
+
+# Database backups
+*.dump
+*.backup
+
+# ============================================
+# Operating System Files
+# ============================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# ============================================
+# IDEs and Editors
+# ============================================
+
+# VSCode
+.vscode/
+*.code-workspace
+.history/
+
+# JetBrains IDEs
+.idea/
+*.iml
+*.ipr
+*.iws
+.idea_modules/
+out/
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
+Session.vim
+Sessionx.vim
+.netrwhist
+tags
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# ============================================
+# Development and Testing
+# ============================================
+
+# Test artifacts
+test-results/
+test-reports/
+*.test.js
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+*.swp
+*.swo
+
+# Debug files
+debug.log
+debug/
+*.debug
+
+# ============================================
+# Build and Deployment
+# ============================================
+
+# Docker
+.dockerignore
+docker-compose.override.yml
+
+# CI/CD
+.gitlab-ci-local/
+
+# ============================================
+# Project-Specific
+# ============================================
+
+# Zcash node data (if running locally)
+.zcash/
+zcash-data/
+
+# Transaction data exports
+exports/
+*.csv
+*.json.backup
+
+# Private keys and UFVKs
+**/keys/
+**/private-keys/
+*.ufvk
+*.key
+*.pem
+
+# Test data with real transactions
+test-data-real/
+
+# ============================================
+# Optional: Keep Example/Template Files
+# ============================================
+
+# Allow example files
+!.env.example
+!config.example.json
+!*.example.*
+!**/examples/

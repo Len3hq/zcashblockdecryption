@@ -1,0 +1,184 @@
+[workspace]
+members = [
+    "components/equihash",
+    "components/f4jumble",
+    "components/zcash_address",
+    "components/zcash_encoding",
+    "components/zcash_protocol",
+    "components/zip321",
+    "devtools",
+    "pczt",
+    "zcash",
+    "zcash_client_backend",
+    "zcash_client_sqlite",
+    "zcash_client_memory",
+    "zcash_extensions",
+    "zcash_history",
+    "zcash_keys",
+    "zcash_primitives",
+    "zcash_proofs",
+]
+
+[workspace.package]
+edition = "2021"
+rust-version = "1.77"
+repository = "https://github.com/zcash/librustzcash"
+license = "MIT OR Apache-2.0"
+categories = ["cryptography::cryptocurrencies"]
+
+# Common dependencies across all of our crates. Dependencies used only by a single crate
+# (and that don't have cross-crate versioning needs) are specified by the crate itself.
+#
+# See the individual crate `Cargo.toml` files for information about which dependencies are
+# part of a public API, and which can be updated without a SemVer bump.
+[workspace.dependencies]
+# Intra-workspace dependencies
+equihash = { version = "0.2", path = "components/equihash" }
+zcash_address = { version = "0.6", path = "components/zcash_address" }
+zcash_client_backend = { version = "0.15", path = "zcash_client_backend" }
+zcash_encoding = { version = "0.2.1", path = "components/zcash_encoding" }
+zcash_keys = { version = "0.5", path = "zcash_keys" }
+zcash_protocol = { version = "0.4.1", path = "components/zcash_protocol" }
+zip321 = { version = "0.2", path = "components/zip321" }
+
+zcash_note_encryption = "0.4"
+zcash_primitives = { version = "0.20", path = "zcash_primitives", default-features = false }
+zcash_proofs = { version = "0.20", path = "zcash_proofs", default-features = false }
+
+# Shielded protocols
+bellman = { version = "0.14", default-features = false, features = ["groth16"] }
+ff = "0.13"
+group = "0.13"
+incrementalmerkletree = "0.7"
+shardtree = "0.5"
+zcash_spec = "0.1"
+
+# Payment protocols
+# - Sapling
+bitvec = "1"
+blake2s_simd = "1"
+bls12_381 = "0.8"
+jubjub = "0.10"
+sapling = { package = "sapling-crypto", version = "0.3", default-features = false }
+
+# - Orchard
+nonempty = "0.7"
+orchard = { version = "0.10", default-features = false }
+pasta_curves = "0.5"
+
+# - Transparent
+bip32 = { version = "0.5", default-features = false, features = ["secp256k1-ffi"] }
+ripemd = "0.1"
+secp256k1 = "0.27"
+
+# CSPRNG
+rand = "0.8"
+rand_core = "0.6"
+
+# Currency conversions
+rust_decimal = { version = "1.35", default-features = false, features = ["serde"] }
+
+# Digests
+blake2b_simd = "1"
+sha2 = "0.10"
+
+# Documentation
+document-features = "0.2"
+
+# Encodings
+base64 = "0.22"
+bech32 = "0.9"
+bs58 = { version = "0.5", features = ["check"] }
+byteorder = "1"
+hex = "0.4"
+percent-encoding = "2.1.0"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# HTTP
+hyper = "1"
+http-body-util = "0.1"
+hyper-util = { version = "0.1.1", features = ["tokio"] }
+tokio-rustls = "0.24"
+webpki-roots = "0.25"
+
+# Logging and metrics
+memuse = "0.2.1"
+tracing = "0.1"
+
+# Parallel processing
+crossbeam-channel = "0.5"
+maybe-rayon = { version = "0.1.0", default-features = false }
+rayon = "1.5"
+
+# Protobuf and gRPC
+prost = "0.13"
+tonic = { version = "0.12", default-features = false }
+tonic-build = { version = "0.12", default-features = false }
+
+# Secret management
+secrecy = "0.8"
+subtle = "2.2.3"
+
+# SQLite databases
+# - Warning: One of the downstream consumers requires that SQLite be available through
+#   CocoaPods, due to being bound to React Native. We need to ensure that the SQLite
+#   version required for `rusqlite` is a version that is available through CocoaPods.
+rusqlite = { version = "0.32", features = ["bundled"] }
+schemerz = "0.2"
+schemerz-rusqlite = "0.320"
+time = { version = "0.3.22", default-features = false }
+uuid = "1.1"
+
+# Static constants and assertions
+lazy_static = "1"
+static_assertions = "1"
+
+# Tests and benchmarks
+ambassador = "0.4"
+assert_matches = "1.5"
+criterion = "0.5"
+proptest = "1"
+rand_chacha = "0.3"
+rand_xorshift = "0.3"
+incrementalmerkletree-testing = "0.2"
+
+# Tor
+# - `arti-client` depends on `rusqlite`, and a version mismatch there causes a compilation
+#   failure due to incompatible `libsqlite3-sys` versions.
+arti-client = { version = "0.23", default-features = false, features = ["compression", "rustls", "tokio"] }
+dynosaur = "0.1.1"
+tokio = "1"
+tor-rtcompat = "0.23"
+tower = "0.4"
+trait-variant = "0.1"
+
+# ZIP 32
+aes = "0.8"
+fpe = "0.6"
+zip32 = "0.1.2"
+
+[profile.release]
+lto = true
+panic = 'abort'
+codegen-units = 1
+
+[profile.test]
+# Since we have many computationally expensive tests, this changes the test profile to
+# compile with optimizations by default, but keep full debug info.
+#
+# This differs from the release profile in the following ways:
+# - it does not set `lto = true`, which increases compile times without substantially
+#   speeding up tests;
+# - it does not set `codegen-units = 1`, which increases compile times and is only
+#   useful to improve determinism of release builds;
+# - it does not set `panic = 'abort'`, which is in any case ignored for tests.
+#
+# To get results as close as possible to a release build, use `cargo test --release`.
+# To speed up compilation and avoid optimizations potentially resulting in lower-quality
+# debug info, use `cargo test --profile=dev`.
+opt-level = 3
+debug = true
+
+[workspace.lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(zcash_unstable, values("zfuture"))'] }

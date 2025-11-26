@@ -1,0 +1,35 @@
+[package]
+name = "zcash_tx_decryptor"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "zcash-tx-decryptor"
+path = "src/simple_main.rs"
+
+[dependencies]
+# Encoding and serialization
+hex = "0.4"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# Async runtime
+tokio = { version = "1.0", features = ["full"] }
+
+# CLI and utilities
+clap = { version = "4.5", features = ["derive"] }
+anyhow = "1.0"
+
+# Date/time
+chrono = { version = "0.4", features = ["serde"] }
+time   = "0.3"
+
+# Zcash core libraries (vendored workspace)
+zcash_client_backend = { path = "../librustzcash/zcash_client_backend", default-features = false, features = ["orchard"] }
+zcash_primitives     = { path = "../librustzcash/zcash_primitives",     default-features = false }
+zcash_protocol       = { path = "../librustzcash/components/zcash_protocol" }
+
+# Ensure the `orchard` crate is built with its `circuit` feature so that
+# librustzcash crates (e.g. zcash_primitives) that reference `orchard::circuit`
+# compile correctly.
+orchard = { version = "0.10.2", default-features = false, features = ["circuit"] }

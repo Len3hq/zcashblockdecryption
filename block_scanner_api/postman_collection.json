@@ -1,0 +1,65 @@
+{
+    "info": {
+        "_postman_id": "c8535094-393b-4bec-a900-f525873994a7",
+        "name": "Zcash Block Scanner API",
+        "description": "Collection for testing the Zcash Block Scanner API endpoints.",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Health Check",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "http://localhost:3005/health",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3005",
+                    "path": [
+                        "health"
+                    ]
+                },
+                "description": "Checks if the API server is running and healthy."
+            },
+            "response": []
+        },
+        {
+            "name": "Scan Blocks",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"blockHeights\": [\n        1000000\n    ],\n    \"ufvk\": \"uviewtest1dummyufvkforverificationpurposesonly\"\n}",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "http://localhost:3005/scan",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3005",
+                    "path": [
+                        "scan"
+                    ]
+                },
+                "description": "Scans specified Zcash blocks for transactions matching the provided UFVK."
+            },
+            "response": []
+        }
+    ]
+}
