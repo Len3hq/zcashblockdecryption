@@ -45,7 +45,7 @@ COPY block_scanner_api/tsconfig.json ./
 COPY block_scanner_api/src ./src
 
 # Install TypeScript as dev dependency and build
-RUN npm install --save-dev typescript @types/node @types/express @types/better-sqlite3 @types/pg
+RUN npm install --save-dev typescript @types/node @types/express @types/pg
 RUN npm run build
 
 # ============================================
@@ -69,15 +69,10 @@ COPY --from=node-builder /app/package*.json ./
 # Copy Rust binary from rust-builder
 COPY --from=rust-builder /app/zcash_tx_decryptor/target/release/zcash-tx-decryptor /app/decryptor/zcash-tx-decryptor
 
-# Create cache directory for SQLite database
-RUN mkdir -p /app/cache
-
 # Set environment variables with Railway-friendly defaults
 ENV PORT=3005 \
     NODE_ENV=production \
-    DECRYPTOR_PATH=/app/decryptor/zcash-tx-decryptor \
-    DB_TYPE=sqlite \
-    DB_PATH=/app/cache/blocks.db
+    DECRYPTOR_PATH=/app/decryptor/zcash-tx-decryptor
 
 # Expose port
 EXPOSE 3005
