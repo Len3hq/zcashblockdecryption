@@ -20,9 +20,6 @@ A high-performance service for scanning Zcash blocks and decrypting shielded tra
 - [Configuration](#configuration)
 - [Usage](#usage)
 - [API Documentation](#api-documentation)
-- [Troubleshooting](#troubleshooting)
-- [Security](#security)
-- [Contributing](#contributing)
 
 ## ⚡ Quick Start
 
@@ -263,99 +260,6 @@ Scan specific blocks for transactions belonging to a UFVK.
 }
 ```
 
-**Status Codes:**
-- `200`: Success
-- `400`: Invalid request (bad UFVK, invalid block heights, etc.)
-- `500`: Server error (all RPC providers failed, decryptor error, etc.)
-
-## 🔍 Troubleshooting
-
-### Common Issues
-
-#### "RPC call failed for getrawtransaction"
-- **Cause**: API endpoint issue or rate limit hit
-- **Solution**: Add fallback endpoints in `.env`
-- **See**: [FALLBACK_SETUP.md](block_scanner_api/FALLBACK_SETUP.md)
-
-#### "Invalid consensus branch id"
-- **Cause**: Outdated librustzcash (pre-NU6.1)
-- **Solution**: Already fixed! The code includes NU6.1 compatibility layer
-- **See**: [FIXES_APPLIED.md](FIXES_APPLIED.md)
-
-#### "All RPC providers failed"
-- **Cause**: All configured endpoints are down or rate-limited
-- **Solution**: 
-  1. Check your API keys are valid
-  2. Verify endpoint URLs
-  3. Add more fallback endpoints
-  4. Consider self-hosted node
-
-#### Database locked errors
-- **Cause**: SQLite concurrency issues
-- **Solution**: The app handles this, but avoid opening the DB in other apps while server is running
-
-See [endtoend.md](endtoend.md#troubleshooting) for more details.
-
-## 🔒 Security
-
-**⚠️ IMPORTANT: Never commit your `.env` file or API keys to Git!**
-
-### Protected by Default
-
-The repository includes comprehensive `.gitignore` protection for:
-- `.env` files (API keys)
-- Database files (`.db`, `.sqlite`)
-- Cache directories
-- Log files
-- Build artifacts
-
-### Before Pushing to GitHub
-
-```bash
-# Verify .env is protected
-git status  # Should NOT show .env
-
-# Check for exposed secrets
-git ls-files | xargs grep -i "api.key" || echo "Safe"
-```
-
-See [SECURITY.md](SECURITY.md) for:
-- Complete security checklist
-- What to do if you expose credentials
-- Pre-commit hook setup
-- API key rotation guide
-
-## 📖 Documentation
-
-- **[endtoend.md](endtoend.md)** - Complete end-to-end guide
-- **[FALLBACK_SETUP.md](block_scanner_api/FALLBACK_SETUP.md)** - Fallback endpoints configuration
-- **[FIXES_APPLIED.md](FIXES_APPLIED.md)** - Technical details of fixes and improvements
-- **[SECURITY.md](SECURITY.md)** - Security best practices
-- **[FALLBACK_ENDPOINTS.md](FALLBACK_ENDPOINTS.md)** - Architectural overview
-
-## 🐛 Known Issues & Solutions
-
-### NU6.1 Transactions (Height ≥ 3,146,400)
-
-**Status**: ✅ Fixed
-
-The current version of librustzcash doesn't natively support NU6.1. We've implemented a compatibility layer that:
-1. Detects NU6.1 transactions (mainnet: ≥3,146,400, testnet: ≥2,976,640)
-2. Patches the consensus branch ID bytes (0x4dec4df0 → 0xc8e71055)
-3. Parses using NU6 rules (same transaction format)
-
-This allows decryption of NU6.1 transactions without upgrading librustzcash.
-
-## 🤝 Contributing
-
-Contributions are welcome! Please:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
 ### Development Guidelines
 
 - Follow existing code style
@@ -373,21 +277,7 @@ This project is open source. See the LICENSE file for details.
 - [librustzcash](https://github.com/zcash/librustzcash) for cryptographic primitives
 - [GetBlock.io](https://getblock.io/) for reliable blockchain RPC access
 
-## 📞 Support
 
-- **Issues**: [GitHub Issues](https://github.com/Len3hq/zcashblockdecryption/issues)
-- **Documentation**: See files in this repository
-- **Zcash Community**: [Zcash Forum](https://forum.zcashcommunity.com/)
-
-## 🎯 Roadmap
-
-- [ ] GraphQL API support
-- [ ] WebSocket streaming for real-time updates
-- [ ] Batch scanning optimization
-- [ ] Native NU6.1+ support (when librustzcash updates)
-- [ ] Docker containerization
-- [ ] Kubernetes deployment configs
-- [ ] Prometheus metrics export
 
 ---
 
